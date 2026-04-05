@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Order System{% endblock %}</title>
+</head>
+<body>
+
+    <nav>
+        <strong>OrderApp</strong> |
+        <a href="/login">Sign In</a> | 
+        <a href="/logout">Sign Out</a>
+    </nav>
+
+    <hr>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>

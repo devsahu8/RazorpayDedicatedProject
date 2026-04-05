@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Next Step{% endblock %}
+
+{% block content %}
+    <h2>What would you like to do?</h2>
+    
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        
+        <div>
+            {% for subfield in form.choice %}
+                <div>
+                    {{ subfield }} {{ subfield.label }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
