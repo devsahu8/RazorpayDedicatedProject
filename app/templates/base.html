@@ -2,21 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Order System{% endblock %}</title>
+    <title>
+        {% if title %}{{ title }} - OrderApp{% else %}Welcome to OrderApp{% endif %}
+    </title>
 </head>
 <body>
-
     <nav>
-        <strong>OrderApp</strong> |
-        <a href="/login">Sign In</a> | 
-        <a href="/logout">Sign Out</a>
+        <a href="{{ url_for('index') }}">Home</a> |
+        {% if current_user.is_anonymous %}
+            <a href="{{ url_for('login') }}">Login</a> |
+            <a href="{{ url_for('register') }}">Register</a>
+        {% else %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
     </nav>
-
     <hr>
+
+    {# Flash Message Support #}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li style="color: blue;">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
 
     <main>
         {% block content %}{% endblock %}
     </main>
-
 </body>
 </html>

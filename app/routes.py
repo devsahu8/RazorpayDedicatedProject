@@ -1,6 +1,6 @@
 from flask import render_template,url_for,redirect,flash
-from app.forms import IndexForm,LoginForm
-from app import app
+from app.forms import IndexForm,LoginForm,RegisterForm
+from app import app,db
 from flask_login import current_user, login_user,logout_user,login_required
 import sqlalchemy as sa
 from app import db
@@ -22,7 +22,7 @@ def login():
     form=LoginForm()
     if form.validate_on_submit():
         user=db.session.scalar(sa.select(User).where(User.username==form.username.data))
-        if user is None or not user.check_password(user.password_hash.data):
+        if user is None or not user.check_password(form.password.data):
             flash("Username or password is wrong")
             return redirect(url_for("login"))
         login_user(user, remember=form.remember_me.data)
@@ -33,3 +33,18 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@app.route("/register",methods=["GET","POST"])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form=RegisterForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!')
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form)
+
