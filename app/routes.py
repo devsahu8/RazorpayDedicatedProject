@@ -1,5 +1,5 @@
 from flask import render_template,url_for,redirect,flash
-from app.forms import IndexForm,LoginForm,RegisterForm,option3Form
+from app.forms import IndexForm,LoginForm,RegisterForm,option3Form,option2Form
 from app import app,db
 from flask_login import current_user, login_user,logout_user,login_required
 import sqlalchemy as sa
@@ -15,7 +15,33 @@ def index():
         return redirect(url_for(form.choice.data))
     return render_template("index.html",form=form)
 
+
+@app.route("/option2",methods=["GET","POST"])
+@login_required
+def option2():
+    orders=db.session.scalars(sa.select(Order).where(Order.reciptent_username==current_user.username)).all()
+    total_amount=0
+    for order in orders:
+        total_amount+=order.amount
+    if orders:
+        flash(f"You have to pay a total of {total_amount} to {len(orders)} Producers.")
+    else:
+        flash("You have no pending orders to pay.")
+    form=option2Form()
+    if form.validate_on_submit():
+        for order in orders:
+            order.status="Paid"
+        db.session.commit()
+        flash("All order paid.")
+
+        return redirect(url_for("option2"))
+    return render_template("option2.html", orders=orders, total=total_amount,form=form)
+    
+    
+
+
 @app.route("/option3",methods=["GET","POST"])
+@login_required
 def option3():
     form=option3Form()
     if form.validate_on_submit():

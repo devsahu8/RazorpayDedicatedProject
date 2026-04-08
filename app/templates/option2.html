@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Received Orders</h1>
+    
+    <p><strong>Total Amount:</strong> {{ total }}</p>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.submit() }}
+    </form>
+
+    <hr>
+
+    {% if orders %}
+        <ul>
+            {% for order in orders %}
+                <li>
+                    ID: {{ order.ord_id[:8] }} | 
+                    From: {{ order.user.username }} | 
+                    Amount: {{ order.amount }} | 
+                    Status: <strong>{{ order.status }}</strong>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No orders found.</p>
+    {% endif %}
+
+    <p><a href="{{ url_for('index') }}">Back</a></p>
+{% endblock %}

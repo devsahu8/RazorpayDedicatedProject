@@ -44,3 +44,6 @@ class option3Form(FlaskForm):
     senderName=StringField("Enter the username where you want to send Order Recipt.",validators=[DataRequired()])
     reciptAmount=IntegerField("Enter amount",validators=[DataRequired()])
     submit=SubmitField("submit")
+
+class option2Form(FlaskForm):
+    submit=SubmitField("Pay all orders.")
