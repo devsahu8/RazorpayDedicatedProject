@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Orders You Have Sent</h1>
+
+    {% if orders %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Recipient</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.reciptent_username }}</td>
+                    <td>{{ order.amount }}</td>
+                    <td>{{ order.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No sent orders found.</p>
+    {% endif %}
+
+    <p><a href="{{ url_for('index') }}">Back</a></p>
+{% endblock %}

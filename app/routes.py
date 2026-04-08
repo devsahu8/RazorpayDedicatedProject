@@ -38,7 +38,14 @@ def option2():
     return render_template("option2.html", orders=orders, total=total_amount,form=form)
     
     
-
+@app.route("/option1")
+@login_required
+def option1():
+    orders=db.session.scalars(sa.select(Order).where(Order.user==current_user)).all()
+    if orders is None:
+        flash("You have sended no orders.")
+        return redirect(url_for("index"))
+    return render_template("option1.html",orders=orders)
 
 @app.route("/option3",methods=["GET","POST"])
 @login_required
