@@ -31,7 +31,7 @@ def load_user(id):
 class Order(db.Model):
     id: so.Mapped[int]=so.mapped_column(primary_key=True)
     ord_id: so.Mapped[str]=so.mapped_column(sa.String(100),index=True,unique=True,default=lambda: str(uuid.uuid4()))
-    amount: so.Mapped[int]=so.mapped_column(sa.Integer)
+    amount: so.Mapped[int]=so.mapped_column(sa.Integer,nullable=False,default=100)
     status: so.Mapped[str]=so.mapped_column(sa.String(20),default="unpaid")
     reciptent_username: so.Mapped[str]=so.mapped_column(sa.String(25))
     created_at: so.Mapped[datetime]=so.mapped_column(index=True,default=lambda:datetime.now(timezone.utc))
