@@ -1,0 +1,5 @@
+{
+  "version": 2,
+  "builds": [{ "src": "razortemp.py", "use": "@vercel/python" }],
+  "routes": [{ "src": "/(.*)", "dest": "razortemp.py" }]
+}
