@@ -1,5 +1,5 @@
 from flask import render_template,url_for,redirect,flash
-from app.forms import IndexForm,LoginForm,RegisterForm
+from app.forms import IndexForm,LoginForm,RegisterForm,option3Form
 from app import app,db
 from flask_login import current_user, login_user,logout_user,login_required
 import sqlalchemy as sa
@@ -14,6 +14,21 @@ def index():
     if form.validate_on_submit():
         return redirect(url_for(form.choice.data))
     return render_template("index.html",form=form)
+
+@app.route("/option3",methods=["GET","POST"])
+def option3():
+    form=option3Form()
+    if form.validate_on_submit():
+        user=db.session.scalar(sa.select(User).where(User.username==form.senderName.data))
+        if user is None:
+            flash("This username does not exist in our database.")
+            return redirect(url_for("option3"))
+        new_order=Order(amount=form.reciptAmount.data,reciptent_username=user.username,user=current_user)
+        db.session.add(new_order)
+        db.session.commit()
+        flash("A order has been created and sended to username.")
+        return redirect(url_for("option3"))
+    return render_template("option3.html",form=form)
 
 @app.route("/login",methods=["GET","POST"])
 def login():

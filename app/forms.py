@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,BooleanField,SubmitField,RadioField
+from wtforms import StringField,PasswordField,BooleanField,SubmitField,RadioField,IntegerField
 from wtforms.validators import DataRequired,Email,EqualTo,ValidationError
 from app.models import User
 import sqlalchemy as sa
@@ -39,3 +39,8 @@ class RegisterForm(FlaskForm):
             User.email == email.data))
         if user is not None:
             raise ValidationError('Please use a different email address.')
+        
+class option3Form(FlaskForm):
+    senderName=StringField("Enter the username where you want to send Order Recipt.",validators=[DataRequired()])
+    reciptAmount=IntegerField("Enter amount",validators=[DataRequired()])
+    submit=SubmitField("submit")
